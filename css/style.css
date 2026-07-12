@@ -87,6 +87,7 @@ a { color: var(--accent-dark); }
 .card {
   background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 12px;
   box-shadow: 0 1px 3px rgb(30 30 60 / 0.05); padding: 0.7rem 0.8rem 0.8rem;
+  min-width: 0;  /* let flex/grid children shrink so inner overflow:auto can clip */
 }
 .card-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.55rem; }
 .card-title, .lesson-eyebrow {
@@ -125,6 +126,7 @@ a { color: var(--accent-dark); }
   gap: 0.9rem; padding: 0.9rem 1.2rem 1.2rem; align-items: start;
   max-width: 1900px; width: 100%; margin: 0 auto;
 }
+.workbench > section { min-width: 0; }  /* grid items default to min-width:auto (=content) */
 .col-controls, .col-store, .col-inspect { display: flex; flex-direction: column; gap: 0.9rem; }
 .toolbar { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
 .speed { display: flex; align-items: center; gap: 0.4rem; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-left: 0.3rem; }
@@ -152,7 +154,7 @@ a { color: var(--accent-dark); }
 
 /* ---------- action log ---------- */
 .log { display: flex; flex-direction: column; gap: 0.4rem; }
-.log-list { max-height: 180px; overflow-y: auto; font-family: var(--mono); font-size: 0.74rem; display: flex; flex-direction: column; gap: 1px; }
+.log-list { max-height: 180px; overflow: auto; font-family: var(--mono); font-size: 0.74rem; display: flex; flex-direction: column; gap: 1px; }
 .log-row { display: flex; gap: 0.5rem; padding: 0.12rem 0.3rem; border-radius: 4px; }
 .log-row.active { background: rgb(232 98 61 / 0.12); }
 .log-n { color: var(--ink-soft); flex: 0 0 1.4em; text-align: right; }
@@ -167,7 +169,7 @@ a { color: var(--accent-dark); }
 .lg-blob::before { background: var(--blob); } .lg-tree::before { background: var(--tree); } .lg-commit::before { background: var(--commit); }
 
 .screen { background: var(--store-bg); border: 1px solid var(--store-edge); border-radius: 10px; box-shadow: inset 0 2px 14px rgb(0 0 0 / 0.5); }
-.store-host { position: relative; height: 440px; overflow: auto; }
+.store-host { position: relative; height: 440px; overflow: auto; max-width: 100%; }
 .store-canvas { position: relative; min-width: 100%; min-height: 100%; }
 .store-empty { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 80%; color: var(--store-dim); }
 .store-edges { position: absolute; inset: 0; pointer-events: none; }
@@ -251,7 +253,7 @@ a { color: var(--accent-dark); }
 .cs-tok b { color: var(--ink); margin-left: 0.15rem; }
 
 /* ---------- event log ---------- */
-.evt-tape { background: var(--store-bg); border: 1px solid var(--store-edge); border-radius: 8px; height: 190px; overflow-y: auto; font-family: var(--mono); font-size: 0.7rem; padding: 0.35rem 0.45rem; }
+.evt-tape { background: var(--store-bg); border: 1px solid var(--store-edge); border-radius: 8px; height: 190px; overflow: auto; font-family: var(--mono); font-size: 0.7rem; padding: 0.35rem 0.45rem; }
 .evt-row { display: flex; gap: 0.5rem; padding: 0.04rem 0.15rem; color: var(--store-ink); white-space: nowrap; }
 .evt-t { color: var(--store-dim); flex: 0 0 2em; text-align: right; }
 .evt-create .evt-msg { color: var(--tree-soft); }
@@ -295,6 +297,8 @@ a { color: var(--accent-dark); }
 @media (max-width: 940px) {
   .workbench { grid-template-columns: 1fr; padding: 0.7rem; }
   .col-inspect { flex-direction: column; }
+  /* undo the row layout's flex-basis, which would otherwise become card HEIGHT */
+  .col-inspect .card { flex: 0 0 auto; }
   .store-host { height: 380px; }
 }
 @media (prefers-reduced-motion: reduce) {
