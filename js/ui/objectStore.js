@@ -10,10 +10,14 @@ import { shortSha } from '../core/objects.js';
 import { t } from '../i18n.js';
 
 const COL = { commit: 0, tree: 1, blob: 2 };
-const COLX = [24, 214, 404];
-const CARD_W = 158;
 const ROW_H = 66;
 const TOP = 44;
+const MARGIN = 16;
+const GAP = 12;
+// Column x-positions and card width are computed from the container width so the
+// three columns fit the screen (down to a floor, below which the store scrolls).
+let COLX = [MARGIN, 214, 404];
+let CARD_W = 158;
 
 export function createObjectStore(container, { onSelect } = {}) {
   container.innerHTML = `
@@ -46,6 +50,14 @@ export function createObjectStore(container, { onSelect } = {}) {
 
   function ensureOrder(sha) { if (!order.includes(sha)) order.push(sha); }
 
+  // Fit three columns into the visible width; shrink cards down to a floor, and
+  // only then let the canvas overflow (scroll). Keeps the store usable on phones.
+  function measure() {
+    const avail = container.clientWidth || 360;
+    CARD_W = Math.max(92, Math.min(168, Math.floor((avail - MARGIN * 2 - GAP * 2) / 3)));
+    COLX = [MARGIN, MARGIN + (CARD_W + GAP), MARGIN + 2 * (CARD_W + GAP)];
+  }
+
   // ---- positions ----
   function positions() {
     const rows = { commit: 0, tree: 0, blob: 0 };
@@ -58,7 +70,8 @@ export function createObjectStore(container, { onSelect } = {}) {
       pos.set(sha, { x: COLX[col], y: TOP + r * ROW_H });
     }
     const maxRows = Math.max(rows.commit, rows.tree, rows.blob, 0);
-    const width = COLX[2] + CARD_W + 24;
+    const content = COLX[2] + CARD_W + MARGIN;
+    const width = Math.max(content, container.clientWidth || content);
     const height = TOP + maxRows * ROW_H + 24;
     return { pos, width, height };
   }
@@ -68,6 +81,7 @@ export function createObjectStore(container, { onSelect } = {}) {
   // ---- render / sync ----
   function layout(opts = {}) {
     const { animateNew = false, born = null, reused = null } = opts;
+    measure();
     const { pos, width, height } = positions();
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
@@ -95,6 +109,7 @@ export function createObjectStore(container, { onSelect } = {}) {
         if (animateNew && sha === born) { el.classList.add('pop'); setTimeout(() => el.classList.remove('pop'), 500); }
       }
       el.querySelector('.obj-sum').textContent = o.summary ?? '';
+      el.style.width = `${CARD_W}px`;
       el.style.left = `${p.x}px`;
       el.style.top = `${p.y}px`;
       el.classList.toggle('selected', sha === selected);
@@ -258,6 +273,18 @@ export function createObjectStore(container, { onSelect } = {}) {
   }
 
   reset();
+
+  // Re-flow the columns/cards when the container is resized (rotation, window
+  // resize, layout breakpoints) — the inside of the store stays responsive too.
+  if (typeof ResizeObserver !== 'undefined') {
+    let lastW = container.clientWidth;
+    const ro = new ResizeObserver(() => {
+      const w = container.clientWidth;
+      if (Math.abs(w - lastW) >= 4) { lastW = w; layout(); }
+    });
+    ro.observe(container);
+  }
+
   return { renderSnapshot, applyEvent, reset, select, highlight: select };
 }
 
