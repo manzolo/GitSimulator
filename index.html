@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDU-GIT · Git Internals Playground</title>
+<meta name="description" content="An interactive simulator of Git's content-addressed object store. A hand-written engine turns your working-tree edits and high-level actions (stage, commit, branch, merge) into real SHA-1 objects — blobs, trees and commits — animated as they are born, deduplicated and linked. Guided levels and a free sandbox.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23202430'/%3E%3Ccircle cx='5' cy='5' r='2' fill='%23e5b567'/%3E%3Ccircle cx='11' cy='6' r='2' fill='%237fb069'/%3E%3Ccircle cx='8' cy='11' r='2' fill='%23d1495b'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark">
+      <span class="dot dot-blob"></span><span class="dot dot-tree"></span><span class="dot dot-commit"></span>
+    </span>
+    <div class="brand-text">
+      <h1>EDU-GIT <span class="brand-sub">OBJECT STORE</span></h1>
+      <span class="brand-tag" data-i18n="tagline"></span>
+    </div>
+  </div>
+  <nav class="top-nav">
+    <button id="btnLevels" class="btn" data-i18n="navLevels"></button>
+    <button id="btnSandbox" class="btn" data-i18n="navSandbox"></button>
+    <button id="btnHelp" class="btn btn-ghost" data-i18n-title="help">?</button>
+    <div class="lang-switch" role="group" aria-label="language">
+      <button data-lang="it">IT</button><button data-lang="en">EN</button>
+    </div>
+  </nav>
+</header>
+
+<main class="workbench">
+  <section class="col-lesson" id="lessonPanel"></section>
+
+  <section class="col-controls">
+    <div class="card">
+      <div class="card-head"><span class="card-title" data-i18n="panelWorktree"></span></div>
+      <div id="worktree"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title" data-i18n="panelActions"></span></div>
+      <div id="actionsBar"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title" data-i18n="panelLog"></span></div>
+      <div id="actionLog"></div>
+    </div>
+  </section>
+
+  <section class="col-store">
+    <div class="card card-store">
+      <div class="card-head">
+        <span class="card-title" data-i18n="panelStore"></span>
+        <div class="toolbar">
+          <button id="btnRun" class="btn btn-primary" title="Ctrl+Enter" data-i18n="run"></button>
+          <button id="btnPause" class="btn" hidden data-i18n="pause"></button>
+          <button id="btnStep" class="btn" title="F8" data-i18n="step"></button>
+          <button id="btnReset" class="btn" data-i18n="reset"></button>
+          <label class="speed"><span data-i18n="speed"></span>
+            <input id="speed" type="range" min="0" max="5" value="2"></label>
+        </div>
+      </div>
+      <div class="store-legend">
+        <span class="lg lg-blob" data-i18n="legendBlob"></span>
+        <span class="lg lg-tree" data-i18n="legendTree"></span>
+        <span class="lg lg-commit" data-i18n="legendCommit"></span>
+      </div>
+      <div id="objectStore" class="screen store-host"></div>
+      <div id="statusLine" class="status-line"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title" data-i18n="panelRefs"></span></div>
+      <div id="refsPanel"></div>
+    </div>
+  </section>
+
+  <section class="col-inspect">
+    <div class="card">
+      <div class="card-head"><span class="card-title" data-i18n="panelInspector"></span></div>
+      <div id="inspector"></div>
+    </div>
+    <div class="card" id="casesCard">
+      <div class="card-head"><span class="card-title" data-i18n="panelCases"></span></div>
+      <div id="casesPanel"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title" data-i18n="panelEvents"></span></div>
+      <div id="eventLog"></div>
+    </div>
+  </section>
+</main>
+
+<div id="levelSelectOverlay" class="overlay" hidden></div>
+
+<div id="helpOverlay" class="overlay" hidden>
+  <div class="modal modal-help">
+    <div class="modal-head">
+      <h2 id="helpTitle"></h2>
+      <button class="btn btn-ghost modal-close" id="helpClose" aria-label="close">✕</button>
+    </div>
+    <div id="helpBody" class="help-body"></div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
