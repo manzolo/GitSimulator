@@ -21,6 +21,7 @@
     </div>
   </div>
   <nav class="top-nav">
+    <button id="btnIntro" class="btn" data-i18n="navIntro"></button>
     <button id="btnLevels" class="btn" data-i18n="navLevels"></button>
     <button id="btnSandbox" class="btn" data-i18n="navSandbox"></button>
     <button id="btnHelp" class="btn btn-ghost" data-i18n-title="help">?</button>
@@ -92,6 +93,19 @@
 </main>
 
 <div id="levelSelectOverlay" class="overlay" hidden></div>
+
+<div id="introOverlay" class="overlay" hidden>
+  <div class="modal modal-help">
+    <div class="modal-head">
+      <h2 id="introTitle"></h2>
+      <button class="btn btn-ghost modal-close" id="introClose" aria-label="close">✕</button>
+    </div>
+    <div id="introBody" class="help-body"></div>
+    <div class="intro-foot">
+      <button class="btn btn-primary" id="introStart"></button>
+    </div>
+  </div>
+</div>
 
 <div id="helpOverlay" class="overlay" hidden>
   <div class="modal modal-help">

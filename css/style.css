@@ -287,6 +287,9 @@ a { color: var(--accent-dark); }
 .help-body table { border-collapse: collapse; width: 100%; font-size: 0.8rem; margin: 0.3rem 0; }
 .help-body th, .help-body td { text-align: left; padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--panel-edge); }
 .help-body th { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
+.help-body td { vertical-align: top; }
+.help-body pre { font-family: var(--mono); font-size: 0.72rem; line-height: 1.5; background: var(--store-bg); color: var(--store-ink); border-radius: 7px; padding: 0.6rem 0.7rem; overflow-x: auto; margin: 0.4rem 0; white-space: pre; }
+.intro-foot { display: flex; justify-content: flex-end; margin-top: 1rem; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1400px) {

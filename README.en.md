@@ -92,6 +92,15 @@ hand:
 Plus a free **sandbox**, bilingual IT/EN, with progress and language saved in
 `localStorage` and hash routing `#level-id`.
 
+## "Basics" primer (from zero)
+
+On the **first visit** a **"Basics"** primer opens automatically, explaining Git
+from zero — what version control is, what a commit/snapshot is, and the lab's
+reveal (blobs/trees/commits addressed by the SHA-1 of their content) with a
+concrete example tied to level 1, a one-sentence-per-term glossary, and how to use
+the lab. It assumes no prior knowledge and can be reopened anytime from the
+**Basics** button in the header.
+
 ## Run locally
 
 ES modules don't work over `file://`, so serve it with any static server:

@@ -6,7 +6,8 @@
 
 import { buildRun, runHeadless } from './core/engine.js';
 import { Player } from './player.js';
-import { initLang, setLang, getLang, t, onLangChange, refreshStatic } from './i18n.js';
+import { initLang, setLang, getLang, t, tr, onLangChange, refreshStatic } from './i18n.js';
+import { INTRO } from './strings/intro.js';
 import * as storage from './storage.js';
 import { levels, levelById } from './levels/index.js';
 import { createWorktree } from './ui/worktree.js';
@@ -285,6 +286,31 @@ document.getElementById('btnLevels').addEventListener('click',
   () => levelSelect.open(levels, storage.getProgress(), currentId));
 document.getElementById('btnSandbox').addEventListener('click', () => select('sandbox'));
 
+// beginner's primer: auto-opens on the very first visit, then lives behind the
+// "Basi / Basics" button
+const introOverlay = document.getElementById('introOverlay');
+function renderIntro() {
+  document.getElementById('introTitle').textContent = t('introTitle');
+  document.getElementById('introBody').innerHTML = tr(INTRO);
+  document.getElementById('introStart').textContent = t('introStart');
+}
+function openIntro() {
+  renderIntro();
+  introOverlay.hidden = false;
+  introOverlay.querySelector('.modal').scrollTop = 0;
+}
+function closeIntro() {
+  introOverlay.hidden = true;
+  storage.setIntroSeen();
+}
+document.getElementById('btnIntro').addEventListener('click', openIntro);
+document.getElementById('introClose').addEventListener('click', closeIntro);
+document.getElementById('introStart').addEventListener('click', () => {
+  closeIntro();
+  if (currentId !== levels[0].id) select(levels[0].id);
+});
+introOverlay.addEventListener('click', (e) => { if (e.target === introOverlay) closeIntro(); });
+
 const helpOverlay = document.getElementById('helpOverlay');
 function renderHelp() {
   document.getElementById('helpTitle').textContent = t('helpTitle');
@@ -294,7 +320,11 @@ document.getElementById('btnHelp').addEventListener('click', () => { renderHelp(
 document.getElementById('helpClose').addEventListener('click', () => { helpOverlay.hidden = true; });
 helpOverlay.addEventListener('click', (e) => { if (e.target === helpOverlay) helpOverlay.hidden = true; });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { helpOverlay.hidden = true; document.getElementById('levelSelectOverlay').hidden = true; }
+  if (e.key === 'Escape') {
+    helpOverlay.hidden = true;
+    document.getElementById('levelSelectOverlay').hidden = true;
+    if (!introOverlay.hidden) closeIntro();
+  }
 });
 
 const langButtons = document.querySelectorAll('.lang-switch button');
@@ -310,6 +340,7 @@ onLangChange(() => {
   if (currentSnapshot) { worktree.render(currentSnapshot, wtOpts()); refsPanel.render(currentSnapshot); }
   actionLog.render(actions);
   if (!helpOverlay.hidden) renderHelp();
+  if (!introOverlay.hidden) renderIntro();
   setStatus(t('statusReady'));
 });
 
@@ -326,3 +357,6 @@ window.addEventListener('hashchange', () => {
   const id = window.location.hash.slice(1);
   if (id !== currentId && (id === 'sandbox' || levelById(id))) select(id);
 });
+
+// First visit ever: welcome the beginner with the primer.
+if (!storage.getIntroSeen()) openIntro();

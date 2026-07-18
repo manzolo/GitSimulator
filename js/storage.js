@@ -49,3 +49,7 @@ export function saveActions(id, actions) {
 
 export function getLastMode() { return get('lastMode'); }
 export function setLastMode(mode) { set('lastMode', mode); }
+
+// The beginner's primer auto-opens once; after that it lives behind a button.
+export function getIntroSeen() { return get('introSeen') === '1'; }
+export function setIntroSeen() { set('introSeen', '1'); }

@@ -1,6 +1,7 @@
 export default {
   // chrome
   tagline: 'Open the hood on Git\'s object store — watch blobs, trees and commits get born.',
+  navIntro: 'Basics',
   navLevels: 'Levels',
   navSandbox: 'Sandbox',
   help: 'Help',
@@ -45,6 +46,10 @@ export default {
   // sandbox
   sandboxTitle: 'Sandbox',
   sandboxText: 'Free play: create files with any content, then stage, commit, branch, checkout and merge. Watch every object appear in the store. Type real bytes and verify the blob hash with <code>git hash-object</code> in your terminal — it will match.',
+
+  // beginner's primer
+  introTitle: 'Start here — Git from zero',
+  introStart: 'Start level 1 →',
 
   // level select
   selectTitle: 'Choose a level',

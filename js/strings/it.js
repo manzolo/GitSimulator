@@ -1,6 +1,7 @@
 export default {
   // chrome
   tagline: 'Apri il cofano dell\'object store di Git — guarda nascere blob, tree e commit.',
+  navIntro: 'Basi',
   navLevels: 'Livelli',
   navSandbox: 'Sandbox',
   help: 'Aiuto',
@@ -45,6 +46,10 @@ export default {
   // sandbox
   sandboxTitle: 'Sandbox',
   sandboxText: 'Gioco libero: crea file con qualsiasi contenuto, poi stage, commit, branch, checkout e merge. Guarda ogni oggetto apparire nello store. Digita byte reali e verifica l\'hash del blob con <code>git hash-object</code> nel tuo terminale — sarà identico.',
+
+  // beginner's primer
+  introTitle: 'Comincia da qui — Git da zero',
+  introStart: 'Inizia il livello 1 →',
 
   // level select
   selectTitle: 'Scegli un livello',

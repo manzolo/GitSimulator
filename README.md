@@ -92,6 +92,15 @@ branch e merge:
 Più una **sandbox** libera, bilingue IT/EN, con progressi e lingua salvati in
 `localStorage` e routing con hash `#id-livello`.
 
+## Primer "Basi" (da zero)
+
+Alla **prima visita** si apre automaticamente un primer **"Basi"** che spiega Git
+da zero — cos'è il controllo di versione, cos'è un commit/snapshot, e la
+rivelazione del laboratorio (blob/tree/commit indirizzati dallo SHA-1 del
+contenuto) con un esempio concreto legato al livello 1, un glossario in una frase
+per termine e come si usa il laboratorio. Non richiede alcuna conoscenza pregressa
+e si può riaprire quando si vuole dal bottone **Basi** in alto.
+
 ## Avvio locale
 
 I moduli ES non funzionano da `file://`, serve un server statico qualsiasi:

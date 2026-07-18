@@ -160,6 +160,17 @@ async function main() {
     await cdp.send('Page.navigate', { url: `${base}/#one-blob` });
     await cdp.waitFor('!!document.querySelector(".lesson-title")', 'app reboot');
 
+    // first visit: the beginner's primer auto-opens and covers the page; close
+    // it and check it stays closed on the next reload
+    await cdp.waitFor('!document.getElementById("introOverlay").hidden', 'beginner primer auto-opens');
+    await cdp.waitFor('document.querySelectorAll("#introBody h3").length >= 4', 'primer content rendered');
+    await cdp.eval('document.getElementById("introClose").click()');
+    await cdp.waitFor('document.getElementById("introOverlay").hidden', 'primer closed');
+    await cdp.send('Page.navigate', { url: `${base}/#one-blob` });
+    await cdp.waitFor('!!document.querySelector(".lesson-title")', 'app reload after primer');
+    if (await cdp.eval('!document.getElementById("introOverlay").hidden')) fail('primer reopened despite introSeen flag');
+    ok('beginner primer: auto-opens once, then stays behind the Basics button');
+
     // turbo for fast headless runs
     await cdp.eval(`(() => { const s = document.getElementById('speed'); s.value = s.max; s.dispatchEvent(new Event('input', { bubbles: true })); })()`);
     ok('turbo speed set');
